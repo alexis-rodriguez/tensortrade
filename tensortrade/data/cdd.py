@@ -71,6 +71,9 @@ class CryptoDataDownload:
         if "d" in timeframe:
             df["date"] = pd.to_datetime(df["date"])
         elif "h" in timeframe:
+            import re
+            pattern = re.compile(".*:00:00")
+            df['date'] = df['date'].apply(lambda date: date if pattern.search(date) else  pd.to_datetime(date, format="%Y-%m-%d %I-%p"))
             df["date"] = pd.to_datetime(df["date"], format="%Y-%m-%d %H:%M:%S")
 
         df = df.set_index("date")
