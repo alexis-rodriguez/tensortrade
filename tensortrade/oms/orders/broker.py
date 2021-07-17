@@ -80,13 +80,18 @@ class Broker(OrderListener, TimeIndexed):
         Then the broker will find any orders that are active, but expired, and
         proceed to cancel them.
         """
+        remove = []
         for order in self.unexecuted:
             if order.is_executable:
-                self.unexecuted.remove(order)
+                # self.unexecuted.remove(order)
+                remove.append(order)
                 self.executed[order.id] = order
 
                 order.attach(self)
                 order.execute()
+
+        for order in remove:
+            self.unexecuted.remove(order)
 
         for order in self.unexecuted + list(self.executed.values()):
             if order.is_active and order.is_expired:
