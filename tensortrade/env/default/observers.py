@@ -6,7 +6,7 @@ import datetime as dt
 import numpy as np
 import pandas as pd
 
-from gym.spaces import Box, Space
+from gymnasium.spaces import Box, Space
 from random import randrange
 
 
@@ -280,11 +280,11 @@ class TensorTradeObserver(Observer):
         """
         return self.feed.has_next()
 
-    def reset(self) -> None:
+    def reset(self, random_start=0) -> None:
         """Resets the observer"""
         self.renderer_history = []
         self.history.reset()
-        self.feed.reset()
+        self.feed.reset(random_start)
         self.warmup()
 
 
